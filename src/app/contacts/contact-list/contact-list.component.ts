@@ -9,6 +9,8 @@ import {
 import { constants } from './contact-list.constants';
 import { CONTACTS } from '../shared/data/mock-contacts';
 
+import 'rxjs/add/operator/map';
+
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
@@ -56,7 +58,7 @@ export class ContactListComponent implements OnInit {
 
     this.contactService
         .delete(contact)
-        .then(() => {
+        .map(() => {
           this.contacts = this.contacts.filter(c => c !== contact);
 
           if (this.selectedContact === contact) {
@@ -83,7 +85,7 @@ export class ContactListComponent implements OnInit {
     this.isLoading = true;
 
     this.contactService.getContacts()
-      .then(contacts => {
+      .map(contacts => {
         this.isLoading = false;
         this.deletingContacts = false;
         this.contacts = contacts;

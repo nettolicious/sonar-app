@@ -12,6 +12,8 @@ import { InvalidEmailModalComponent } from '../shared';
 import { InvalidPhoneNumberModalComponent } from '../shared';
 import { countryDialingCodes } from '../shared';
 
+import 'rxjs/add/operator/map';
+
 @Component({
   selector: 'app-contact-edit',
   templateUrl: './contact-edit.component.html',
@@ -49,7 +51,7 @@ export class ContactEditComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.contactService.getContact(id)
-        .then(contact => {
+        .map(contact => {
           this.isLoading = false;
           this.contact = contact;
       });
@@ -63,7 +65,7 @@ export class ContactEditComponent implements OnInit, OnDestroy {
 
     this.displayEditSnackBar();
     this.contactService.save(contact)
-        .then(() => {
+        .map(() => {
           this.router.navigate(['/']);
         });
   }

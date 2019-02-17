@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -15,7 +15,7 @@ import { ContactEditComponent } from './contacts/contact-edit';
 import { ContactListComponent } from './contacts/contact-list';
 import { ContactsComponent } from './contacts/contacts.component';
 import { ContactFeedDialogComponent } from './contacts/contact-feed';
-import { ContactFeedService } from './contacts/shared/services';
+import { ContactFeedService, BrowserStorage, PreferencesService } from './contacts/shared/services';
 import { ContactService } from './contacts/shared/services';
 import { FavoriteIconDirective } from './contacts/shared/favorite-icon';
 import { PageNotFoundComponent } from './page-not-found-component';
@@ -27,6 +27,7 @@ import { AppComponent } from './app.component';
 import { RoutingModule } from './app-routing.module';
 import { InvalidEmailModalComponent } from './contacts/shared';
 import { InvalidPhoneNumberModalComponent } from './contacts/shared';
+import { PreferencesAsyncService } from './contacts/shared/services/preferences-async.service';
 
 @NgModule({
   declarations: [
@@ -54,13 +55,16 @@ import { InvalidPhoneNumberModalComponent } from './contacts/shared';
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: true }),
     RoutingModule
   ],
   providers: [
     ContactService,
     ContactFeedService,
+    BrowserStorage,
+    PreferencesService,
+    PreferencesAsyncService
   ],
   bootstrap: [AppComponent]
 })

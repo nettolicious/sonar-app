@@ -7,6 +7,8 @@ import { Contact } from '../shared/models/contact.model';
 import { InvalidEmailModalComponent } from '../shared';
 import { InvalidPhoneNumberModalComponent } from '../shared';
 
+import 'rxjs/add/operator/map';
+
 @Component({
   selector: 'app-new-contact',
   templateUrl: './new-contact.component.html',
@@ -44,7 +46,7 @@ export class NewContactComponent implements OnInit {
     this.savingContact = true;
 
     this.contactService.save(contact)
-        .then(() => {
+        .map(() => {
           this.savingContact = false;
           this.router.navigate(['/']);
     });

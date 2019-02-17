@@ -9,6 +9,8 @@ import {
 import { constants } from './contact-detail.constants';
 import { MatDialog } from '@angular/material';
 
+import 'rxjs/add/operator/map';
+
 @Component({
   selector: 'app-contact-detail',
   templateUrl: './contact-detail.component.html',
@@ -30,7 +32,7 @@ export class ContactDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.contactService.getContact(id)
-        .then(contact => {
+        .map(contact => {
           this.isLoading = false;
           this.contact = contact;
       });
