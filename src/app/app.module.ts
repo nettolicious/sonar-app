@@ -1,67 +1,67 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {AppComponent} from './app.component';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {MatMenuModule} from '@angular/material/menu';
-import {MatIconModule} from '@angular/material/icon';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './in-memory-data.service';
 
-import {
-    MatListModule,
-    MatSidenavModule, MatToolbarModule,
-} from "@angular/material";
-import {HttpClientModule} from "@angular/common/http";
+import './rxjs-extensions';
 
-import {RouterModule, Routes} from "@angular/router";
-import {AuthModule} from "./auth/auth.module";
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import {RouterStateSerializer, StoreRouterConnectingModule} from "@ngrx/router-store";
+import { AppMaterialModule } from './app.material.module';
+import { ContactDetailComponent } from './contacts/contact-detail';
+import { ContactEditComponent } from './contacts/contact-edit';
+import { ContactListComponent } from './contacts/contact-list';
+import { ContactsComponent } from './contacts/contacts.component';
+import { ContactFeedDialogComponent } from './contacts/contact-feed';
+import { ContactFeedService } from './contacts/shared/services';
+import { ContactService } from './contacts/shared/services';
+import { FavoriteIconDirective } from './contacts/shared/favorite-icon';
+import { PageNotFoundComponent } from './page-not-found-component';
+import { PhoneNumberPipe } from './contacts/shared/phone-number';
+import { NewContactComponent } from './contacts/new-contact/new-contact.component';
+import { ShowContactsDirective } from './contacts/shared/show-contacts';
 
-import { EffectsModule } from '@ngrx/effects';
-import { reducers, metaReducers } from './reducers';
-import {AuthGuard} from './auth/auth.guard';
-import {CustomSerializer} from './shared/utils';
-
-
-const routes: Routes = [
-    {
-        path: 'courses',
-        loadChildren: './courses/courses.module#CoursesModule',
-        canActivate: [AuthGuard],
-    },
-    {
-        path: "**",
-        redirectTo: '/'
-    }
-];
-
+import { AppComponent } from './app.component';
+import { RoutingModule } from './app-routing.module';
+import { InvalidEmailModalComponent } from './contacts/shared';
+import { InvalidPhoneNumberModalComponent } from './contacts/shared';
 
 @NgModule({
-    declarations: [
-        AppComponent
-    ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        RouterModule.forRoot(routes),
-        HttpClientModule,
-        MatMenuModule,
-        MatIconModule,
-        MatSidenavModule,
-        MatListModule,
-        MatToolbarModule,
-        AuthModule.forRoot(),
-        StoreModule.forRoot(reducers, { metaReducers }),
-        !environment.production ? StoreDevtoolsModule.instrument() : [],
-        EffectsModule.forRoot([]),
-        StoreRouterConnectingModule.forRoot({stateKey:'router'})
-    ],
-    providers: [
-      { provide: RouterStateSerializer, useClass: CustomSerializer }
-    ],
-    bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    ContactEditComponent,
+    ContactDetailComponent,
+    ContactFeedDialogComponent,
+    ContactListComponent,
+    ContactsComponent,
+    FavoriteIconDirective,
+    InvalidEmailModalComponent,
+    InvalidPhoneNumberModalComponent,
+    PageNotFoundComponent,
+    PhoneNumberPipe,
+    NewContactComponent,
+    ShowContactsDirective
+  ],
+  entryComponents: [
+    ContactFeedDialogComponent,
+    InvalidEmailModalComponent,
+    InvalidPhoneNumberModalComponent
+  ],
+  imports: [
+    AppMaterialModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    HttpModule,
+    InMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: true }),
+    RoutingModule
+  ],
+  providers: [
+    ContactService,
+    ContactFeedService,
+  ],
+  bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }

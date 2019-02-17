@@ -1,17 +1,14 @@
-
->>> body {
-    margin: 0;
+div {
+    margin: 10px 100px;
+    text-align: left;
 }
 
 main {
-    margin: 30px;
+    padding: 20px;
 }
 
-.menu-button {
-    background: #607d8b;
+a.titleBar {
     color: white;
-    border: none;
-    cursor:pointer;
-    outline:none;
+    text-decoration: none;
+    padding-left: 10px;
 }
-

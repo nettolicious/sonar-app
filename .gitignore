@@ -18,7 +18,7 @@
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -30,13 +30,21 @@
 /coverage
 /libpeerconnection.log
 npm-debug.log
+/output/
 testem.log
 /typings
+yarn-error.log
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Yarn
+yarn-error.log
 
 # e2e
 /e2e/*.js
 /e2e/*.map
 
-# System Files
-.DS_Store
-Thumbs.db
+# tests
+/src/**/*.spec.ts
