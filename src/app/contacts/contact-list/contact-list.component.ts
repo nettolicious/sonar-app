@@ -7,9 +7,7 @@ import {
   ContactService
 } from '../shared';
 import { constants } from './contact-list.constants';
-import { CONTACTS } from '../shared/data/mock-contacts';
-
-import 'rxjs/add/operator/map';
+import { CONTACTS } from '..//shared/data/mock-contacts';
 
 @Component({
   selector: 'app-contact-list',
@@ -57,9 +55,10 @@ export class ContactListComponent implements OnInit {
     this.displayDeleteSnackBar(contact);
 
     this.contactService
-        .delete(contact)
-        .map(() => {
-          this.contacts = this.contacts.filter(c => c !== contact);
+      .delete(contact)
+      .toPromise()
+      .then(() => {
+        this.contacts = this.contacts.filter(c => c !== contact);
 
           if (this.selectedContact === contact) {
             this.selectedContact = null;
@@ -85,7 +84,8 @@ export class ContactListComponent implements OnInit {
     this.isLoading = true;
 
     this.contactService.getContacts()
-      .map(contacts => {
+      .toPromise()
+      .then(contacts => {
         this.isLoading = false;
         this.deletingContacts = false;
         this.contacts = contacts;
@@ -104,10 +104,17 @@ export class ContactListComponent implements OnInit {
 
   public saveContact(contact: Contact) {
     contact.favorite = !contact.favorite;
-    this.contactService.save(contact);
+    this.contactService.update(contact);
   }
 
   public onSelect(contact: Contact): void {
     this.selectedContact = contact;
+  }
+
+  public sortContacts(property, order) {
+    this.contacts = this.contacts.sort((a, b) => {
+      console.log('sorting', property, order);
+      return (a[property] > b[property]) ? 1 : -1;
+    });
   }
 }

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/empty'
 
 import { Contact } from '../';
 
@@ -29,12 +29,12 @@ export class ContactService {
                .map(contacts => contacts.find(contact => contact.id === id));
   }
 
-  public save(contact: Contact): Observable<Contact> {
-    if (contact.id) {
-      return this.put(contact);
-    }
-
+  public add(contact: Contact): Observable<Contact> {
     return this.post(contact);
+  }
+
+  public update(contact: Contact): Observable<Contact> {
+    return this.put(contact);
   }
 
   public new(contact: Contact): Observable<Contact> {
@@ -52,7 +52,7 @@ export class ContactService {
 
   public post(contact: Contact): Observable<Contact> {
     return this.http
-        .post(this.contactsUrl, JSON.stringify(contact), {headers: this.headers})
+        .post<Contact>(this.contactsUrl, contact, {headers: this.headers})
         .catch(this.handleError);
   }
 
@@ -60,7 +60,7 @@ export class ContactService {
     const url = `${this.contactsUrl}/${contact.id}`;
 
     return this.http
-             .put(url, JSON.stringify(contact), {headers: this.headers})
+             .put<Contact>(url, contact, {headers: this.headers})
              .map(() => contact)
              .catch(this.handleError);
   }

@@ -3,10 +3,10 @@
 # compiled output
 /dist
 /tmp
-/out-tsc
 
 # dependencies
 /node_modules
+/bower_components
 
 # IDEs and editors
 /.idea
@@ -18,7 +18,7 @@
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -27,24 +27,19 @@
 # misc
 /.sass-cache
 /connect.lock
-/coverage
+/coverage/*
 /libpeerconnection.log
 npm-debug.log
-/output/
 testem.log
 /typings
-yarn-error.log
-
-# System Files
-.DS_Store
-Thumbs.db
-
-# Yarn
-yarn-error.log
 
 # e2e
 /e2e/*.js
 /e2e/*.map
+/e2e/*-spec.ts
 
-# tests
-/src/**/*.spec.ts
+# unit tests
+
+#System Files
+.DS_Store
+Thumbs.db

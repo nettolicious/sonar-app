@@ -3,19 +3,19 @@
     <div>
       <h4>Add New Contact</h4>
       <mat-form-field>
-        <input matInput type="text" id="contact-name"
-            placeholder="Name" align="end" [(ngModel)]="contact.name" required />
+        <input mdInput type="text" id="contact-name"
+            placeholder="Name" align="end" [(ngModel)]="contact.name" required matNativeControl />
       </mat-form-field>
       <br />
       <div *ngIf="contact.name">
         <mat-form-field>
-          <input matInput type="email" css="contact-email" id="contact-email"
-              placeholder="Email" align="end" [(ngModel)]="contact.email" />
+          <input mdInput type="email" css="contact-email" id="contact-email"
+              placeholder="Email" align="end" [(ngModel)]="contact.email" matNativeControl />
         </mat-form-field>
         <br />
         <mat-form-field>
-          <input matInput id="tel" type="tel" id="contact-tel"
-              placeholder="Phone Number (10 digits)" align="end" [(ngModel)]="contact.number" />
+          <input mdInput id="tel" type="tel" id="contact-tel"
+              placeholder="Phone Number (10 digits)" align="end" [(ngModel)]="contact.number" matNativeControl />
         </mat-form-field>
         <br />
         <button class="create-button" (click)="addNewContact(contact)" mat-raised-button color="primary">Create</button>

@@ -9,8 +9,6 @@ import {
 import { constants } from './contact-detail.constants';
 import { MatDialog } from '@angular/material';
 
-import 'rxjs/add/operator/map';
-
 @Component({
   selector: 'app-contact-detail',
   templateUrl: './contact-detail.component.html',
@@ -32,7 +30,7 @@ export class ContactDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.contactService.getContact(id)
-        .map(contact => {
+        .subscribe(contact => {
           this.isLoading = false;
           this.contact = contact;
       });
@@ -42,7 +40,7 @@ export class ContactDetailComponent implements OnInit {
   openDialog(): void {
     // For instructional purposes, insert a slight delay before opening the dialog
     setTimeout(() => {
-      const dialogRef = this.dialog.open(ContactFeedDialogComponent, {disableClose: true, data: {name: this.contact.name}});
+      const dialogRef = this.dialog.open(ContactFeedDialogComponent);
       dialogRef.afterClosed().subscribe(result => {
         // TODO do something here if Follow is clicked
       });

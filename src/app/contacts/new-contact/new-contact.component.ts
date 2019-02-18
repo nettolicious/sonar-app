@@ -7,8 +7,6 @@ import { Contact } from '../shared/models/contact.model';
 import { InvalidEmailModalComponent } from '../shared';
 import { InvalidPhoneNumberModalComponent } from '../shared';
 
-import 'rxjs/add/operator/map';
-
 @Component({
   selector: 'app-new-contact',
   templateUrl: './new-contact.component.html',
@@ -23,7 +21,8 @@ export class NewContactComponent implements OnInit {
 
   ngOnInit() {
     this.contactService.getContacts()
-        .then(contacts => { this.createNewContact(contacts.length); });
+      .toPromise()
+      .then(contacts => { this.createNewContact(contacts.length) });
   }
 
   createNewContact(numContacts: number) {
@@ -45,21 +44,22 @@ export class NewContactComponent implements OnInit {
 
     this.savingContact = true;
 
-    this.contactService.save(contact)
-        .map(() => {
-          this.savingContact = false;
-          this.router.navigate(['/']);
-    });
+    this.contactService.add(contact)
+      .toPromise()
+      .then(() => {
+        this.savingContact = false;
+        this.router.navigate(['/']);
+      });
   }
 
   private isEmailValid(): boolean {
     return this.contact.email === '' ||
-        (this.contact.email !== '' && this.contact.email.includes('@') && this.contact.email.includes('.'));
+      (this.contact.email !== '' && this.contact.email.includes('@') && this.contact.email.includes('.'));
   }
 
   private isPhoneNumberValid(): boolean {
     return this.contact.number === '' ||
-        this.contact.number !== '' && this.contact.number.length === 10 && /^\d+$/.test(this.contact.number);
+      this.contact.number !== '' && this.contact.number.length === 10 && /^\d+$/.test(this.contact.number);
   }
 
   private isFormValid(): boolean {

@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogRef, MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
@@ -15,19 +15,17 @@ import { countryDialingCodes } from '../shared';
 import 'rxjs/add/operator/map';
 
 @Component({
-  selector: 'app-contact-edit',
+  selector: 'app-contact-detail',
   templateUrl: './contact-edit.component.html',
   styleUrls: ['./contact-edit.component.css'],
   providers: [MatSnackBar]
 })
-export class ContactEditComponent implements OnInit, OnDestroy {
+export class ContactEditComponent implements OnInit {
   public loadingContactMessage: string = constants.LOADING_CONTACT_MESSAGE;
   public noContactFoundMessage: string = constants.NO_CONTACT_FOUND_MESSAGE;
   public isLoading = true;
   public contact: Contact = null;
   public countryDialingCodes: string[] = this.getKeys(countryDialingCodes);
-
-  private modalRef: MatDialogRef<any>;
 
   constructor(private contactService: ContactService, private route: ActivatedRoute, private router: Router,
               private snackBar: MatSnackBar, private dialog: MatDialog) { }
@@ -36,15 +34,13 @@ export class ContactEditComponent implements OnInit, OnDestroy {
     this.loadContact();
   }
 
-  ngOnDestroy() {
-    if (this.modalRef) {
-      this.modalRef.close();
-    }
+  public getKeys(object: Object): string[] {
+    return Object.keys(object).map((key, value) => key);
   }
 
   public saveContact(contact: Contact) {
     contact.favorite = !contact.favorite;
-    this.contactService.save(contact);
+    this.contactService.update(contact);
   }
 
   public loadContact(): void {
@@ -58,23 +54,7 @@ export class ContactEditComponent implements OnInit, OnDestroy {
     });
   }
 
-  public updateContact(contact: Contact): void {
-    if (!this.isContactValid(contact)) {
-      return;
-    }
-
-    this.displayEditSnackBar();
-    this.contactService.save(contact)
-        .map(() => {
-          this.router.navigate(['/']);
-        });
-  }
-
-  private getKeys(object: Object): string[] {
-    return Object.keys(object).map((key, value) => key);
-  }
-
-  private displayEditSnackBar(): void {
+  public displayEditSnackBar(): void {
     const message = 'Contact updated';
     const snackConfig: MatSnackBarConfig = {duration: 2000};
     const actionLabel = '';
@@ -82,22 +62,35 @@ export class ContactEditComponent implements OnInit, OnDestroy {
     this.snackBar.open(message, actionLabel, snackConfig);
   }
 
-  private isEmailValid(email: string): boolean {
+  public updateContact(contact: Contact): void {
+    if (!this.isContactValid(contact)) {
+      return;
+    }
+
+    this.displayEditSnackBar();
+    this.contactService.update(contact)
+      .toPromise()
+      .then(() => {
+        this.router.navigate(['/']);
+      });
+  }
+
+  public isEmailValid(email: string): boolean {
     return email === '' || (email !== '' && email.includes('@') && email.includes('.'));
   }
 
-  private isPhoneNumberValid(phoneNumber: string): boolean {
+  public isPhoneNumberValid(phoneNumber: string): boolean {
     return phoneNumber === '' || (phoneNumber !== '' && phoneNumber.length === 10 && /^\d+$/.test(phoneNumber));
   }
 
-  private isContactValid(contact: Contact): boolean {
+  public isContactValid(contact: Contact): boolean {
     if (!this.isEmailValid(contact.email)) {
-      this.modalRef = this.dialog.open(InvalidEmailModalComponent);
+      this.dialog.open(InvalidEmailModalComponent);
       return false;
     }
 
     if (!this.isPhoneNumberValid(contact.number)) {
-      this.modalRef = this.dialog.open(InvalidPhoneNumberModalComponent);
+      this.dialog.open(InvalidPhoneNumberModalComponent);
       return false;
     }
 

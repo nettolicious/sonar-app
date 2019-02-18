@@ -1,6 +1,11 @@
 import { ComponentRef, DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 
+export function getStarElement(fixture: ComponentFixture<ComponentRef<any>>, defaultElementIndex: number): DebugElement {
+  const el: DebugElement = fixture.nativeElement as DebugElement;
+  return el.children[defaultElementIndex];
+}
+
 export function doClassesMatch(resultClasses: DOMTokenList, expectedClasses: string[]): boolean {
   let classesMatch = true;
   let currentClass: string = null;
@@ -15,4 +20,9 @@ export function doClassesMatch(resultClasses: DOMTokenList, expectedClasses: str
   }
 
   return classesMatch;
+}
+
+export function getElement(fixture: ComponentFixture<ComponentRef<any>>): DebugElement {
+  const el: DebugElement = fixture.nativeElement as DebugElement;
+  return el;
 }
